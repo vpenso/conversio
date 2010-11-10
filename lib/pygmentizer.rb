@@ -24,7 +24,6 @@ class Pygmentizer
   end
 
   def transform_code_blocks(text)
-    puts "pygmentizing..."
     raise RuntimeError, "pygmentize not in path" if 
     Pygmentizer::respond_to?("pygmentize")
     @input_by_line = Array.new 

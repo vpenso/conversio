@@ -36,6 +36,10 @@ DST: Target directory for the XHTML output.
 Options
 -------
 
+-c, --config
+
+  Creates a personal configuration file in ~/.conversiorc
+
 -e, --engine:
 
   Select the Markdown parser to be used:
@@ -68,14 +72,17 @@ default_template = <<EOF
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <style type="text/css" media="screen">
-    <%= @style %>
-  </style>
 </head>
 <body>
   <%= @content %>
 </body>
 </html>
+EOF
+
+config = <<EOF
+conf:
+  colorize: true
+  table_of_content: true
 EOF
 
 
@@ -112,15 +119,19 @@ begin
 
   # list of user options
   opts = GetoptLong.new(
-     [ '--engine', '-e', GetoptLong::OPTIONAL_ARGUMENT],
-     [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
-     [ '--template', '-t', GetoptLong::OPTIONAL_ARGUMENT ],
-     [ '--template-default', GetoptLong::NO_ARGUMENT ]
+    ['--config', '-c', GetoptLong::NO_ARGUMENT],
+    [ '--engine', '-e', GetoptLong::OPTIONAL_ARGUMENT],
+    [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
+    [ '--template', '-t', GetoptLong::OPTIONAL_ARGUMENT ],
+    [ '--template-default', GetoptLong::NO_ARGUMENT ]
   )
 
   # parse the options from the command line
   opts.each do |opt, arg|
     case opt
+    when '--config':
+      open("#{ENV['HOME']}/.conversiorc",'w') { |f| f.write config }
+      exit 0
     when '--engine':
       engine = arg
     when '--help': 
