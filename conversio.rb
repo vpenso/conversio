@@ -6,7 +6,6 @@ require 'yaml'
 require 'ftools'
 require 'fileutils'
 require 'pathname'
-require 'bluecloth'
 require 'getoptlong'
 require 'lib/pygmentizer'
 require 'lib/converter'
@@ -50,6 +49,10 @@ Options
 
   show help
 
+-s --style DST:
+
+  Write a resonable default CSS configuration to DST.
+
 -t, --template FILE:
 
   FILE containing an ERB template with:
@@ -72,6 +75,9 @@ default_template = <<EOF
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link href="./style/reset.css" rel="stylesheet" type="text/css"> 
+  <link href="./style/content.css" rel="stylesheet" type="text/css"> 
+  <link href="./style/pygments.css" rel="stylesheet" type="text/css"> 
 </head>
 <body>
   <%= @content %>
@@ -108,8 +114,6 @@ end
 # -------------------------------------------------------------
 # main program
 # -------------------------------------------------------------
-
-
 begin
 
   # default values
@@ -119,9 +123,10 @@ begin
 
   # list of user options
   opts = GetoptLong.new(
-    ['--config', '-c', GetoptLong::NO_ARGUMENT],
+    [ '--config', '-c', GetoptLong::NO_ARGUMENT],
     [ '--engine', '-e', GetoptLong::OPTIONAL_ARGUMENT],
     [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
+    [ '--style', '-s', GetoptLong::OPTIONAL_ARGUMENT],
     [ '--template', '-t', GetoptLong::OPTIONAL_ARGUMENT ],
     [ '--template-default', GetoptLong::NO_ARGUMENT ]
   )
@@ -129,24 +134,27 @@ begin
   # parse the options from the command line
   opts.each do |opt, arg|
     case opt
-    when '--config':
+    when '--config'
       open("#{ENV['HOME']}/.conversiorc",'w') { |f| f.write config }
       exit 0
-    when '--engine':
+    when '--engine'
       engine = arg
-    when '--help': 
+    when '--help' 
       puts help
       exit 0
-    when '--template': 
+    when '--style'
+      FileUtils::Verbose.cp_r('resources/css/.',"#{arg}/style/")
+      exit 0
+    when '--template' 
       template = open( arg ){ |file| file.read } if File.exist?(arg)
-    when '--template-default': 
+    when '--template-default' 
       puts default_template
       exit 0
     end
   end
 
   # get the input source
-  src = ARGV[0] || raise("No input defined")
+  src = ARGV[0] || raise("no input defined")
   dst = ARGV[1] # optional parameter!
   # user the default XHTML template if the user hasn't defined its own
   template = default_template if template.nil? 
