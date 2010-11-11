@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby 
 
+$DEBUG = false
+
 require 'rubygems'
 require 'erb'
 require 'yaml'
@@ -35,9 +37,13 @@ DST: Target directory for the XHTML output.
 Options
 -------
 
--c, --config
+--config:
 
-  Creates a personal configuration file in ~/.conversiorc
+  Creates a personal configuration file in ~/.conversiorci
+
+-c, --colorize:
+
+  Enable syntax high-lighting for marked code blocks.
 
 -e, --engine:
 
@@ -53,7 +59,11 @@ Options
 
   Write a resonable default CSS configuration to DST.
 
--t, --template FILE:
+-t, --toc:
+
+  Enables the creation of a table of content.
+
+--template FILE:
 
   FILE containing an ERB template with:
   * '<%= content %>' to mark the postion inside the body tag
@@ -65,6 +75,10 @@ Options
   Prints the default template used when no template is specified
   by the user. Take it as an very simple example to write your
   own template files.
+
+-v, --verbose:
+
+  Print more verbose output.
 EOF
 
 default_template = <<EOF
@@ -78,9 +92,14 @@ default_template = <<EOF
   <link href="./style/reset.css" rel="stylesheet" type="text/css"> 
   <link href="./style/content.css" rel="stylesheet" type="text/css"> 
   <link href="./style/pygments.css" rel="stylesheet" type="text/css"> 
+  <link href="./style/default.css" rel="stylesheet" type="text/css"> 
 </head>
 <body>
-  <%= @content %>
+<div id="display">
+  <div id="content">
+    <%= @content %>
+  </div>
+</div>
 </body>
 </html>
 EOF
@@ -120,20 +139,28 @@ begin
   style = nil
   template = nil
   engine = nil
+  toc = false
+  color = false
+  verbose = false
 
   # list of user options
   opts = GetoptLong.new(
-    [ '--config', '-c', GetoptLong::NO_ARGUMENT],
+    [ '--colorize', '-c', GetoptLong::NO_ARGUMENT],
+    [ '--config', GetoptLong::NO_ARGUMENT],
     [ '--engine', '-e', GetoptLong::OPTIONAL_ARGUMENT],
     [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
     [ '--style', '-s', GetoptLong::OPTIONAL_ARGUMENT],
-    [ '--template', '-t', GetoptLong::OPTIONAL_ARGUMENT ],
-    [ '--template-default', GetoptLong::NO_ARGUMENT ]
+    [ '--toc', '-t', GetoptLong::NO_ARGUMENT],
+    [ '--template', GetoptLong::OPTIONAL_ARGUMENT ],
+    [ '--template-default', GetoptLong::NO_ARGUMENT ],
+    [ '--verbose', '-v', GetoptLong::NO_ARGUMENT]
   )
 
   # parse the options from the command line
   opts.each do |opt, arg|
     case opt
+    when '--colorize'
+      color = true
     when '--config'
       open("#{ENV['HOME']}/.conversiorc",'w') { |f| f.write config }
       exit 0
@@ -145,11 +172,15 @@ begin
     when '--style'
       FileUtils::Verbose.cp_r('resources/css/.',"#{arg}/style/")
       exit 0
+    when '--toc'
+      toc = true
     when '--template' 
       template = open( arg ){ |file| file.read } if File.exist?(arg)
     when '--template-default' 
       puts default_template
       exit 0
+    when '--verbose'
+      verbose = true
     end
   end
 
@@ -160,6 +191,8 @@ begin
   template = default_template if template.nil? 
   converter = Converter.new(template)
   converter.load_parser(engine) unless engine.nil?
+  converter.color = true if color
+  converter.table_of_content = true if toc
   # get all the input files
   input_files = Array.new
   if File.directory?(src) then
@@ -186,5 +219,4 @@ rescue => exc
   STDERR.puts "  use -h for detailed instructions"
   exit 1
 end
-
 

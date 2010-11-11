@@ -1,7 +1,4 @@
 
-
-
-
 class Hash
 
  def deep_merge(hash)
@@ -34,23 +31,17 @@ end
 
 class Converter
 
+  attr_accessor :table_of_content, :color
+
   def initialize(template)
     @template = template
-    # global configuration default
-    @meta_data = {
-      'title' => 'empty',
-      'conf' => {
-         'colorize' => false,
-         'table_of_content' => false,
-         'template' => nil
-      }
-    }
-    # read user configuration
-    user_config = "#{ENV['HOME']}/.conversiorc"
-    if File.exists?(user_config)
+    @table_of_content = false
+    @color = false
+    #user_config = "#{ENV['HOME']}/.conversiorc"
+    #if File.exists?(user_config)
       # overwrite defaults
-      @meta_data = @meta_data.deep_merge(YAML.load_file(user_config))
-    end
+      #@meta_data = @meta_data.deep_merge(YAML.load_file(user_config))
+    #end
     # Holds the input Markdown plain text
     @source = nil
     # Hold Markdown rendered to HTML
@@ -64,12 +55,9 @@ class Converter
 
   def markdown_to_xhtml(src,dst)
     @source = open(src).readlines.join
-    # load the file specific configuration if existing
-    config = configure()
-    colorize() if config['conf']['colorize'] 
+    colorize() if @color 
     parse()    
-    generate_table_of_content() if config['conf']['table_of_content']
-    load_template(File.expand_path(config['conf']['template'])) unless config['conf']['template'].nil?
+    generate_table_of_content() if @table_of_content
     render()
     # write the HTML file
     File.makedirs(File.dirname(dst)) unless File.exists?(File.dirname(dst))
@@ -100,7 +88,9 @@ class Converter
     # read the header of the source file
     start = @source.index("|--")
     ende = @source.index("--|")
-    if start != nil and ende != nil then
+    #if start != nil and ende != nil then
+    if false
+      STDERR.puts 'Meta data found in file!' if $DEBUG
       yamlheader = @source[start+3,ende-start-3]
       # overwrite defaults
       config = @meta_data.deep_merge(YAML.load(yamlheader))

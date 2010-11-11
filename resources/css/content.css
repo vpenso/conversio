@@ -2,9 +2,6 @@
     padding-left: 8px;
     padding-right: 8px;
 }
-#content {
-	text-align: center;
-}
 
 #content p {
 	padding-top: 0.4em;
@@ -15,7 +12,6 @@
 	font-size: 2.4em;
 	padding-top: 1em;
 	padding-bottom: 0.4em;
-        line-height: 1.2em;
 }
 #content h2 { 
 	font-size: 2em; 
@@ -68,44 +64,44 @@
 }
 
 #content code {
-    font-family: Georgia, Verdana, Arial, sans-serif; 
-    font-weight: normal;
-    color: darkblue;
+	font-family: 'Lucida Console', Courier, Monaco; 
+	font-size: 1em;
+        font-weight: normal;
+	color: dimgray;
 }
 	
 #content pre {
-    line-height: normal;
-    padding-left: 16px;
-    overflow: hidden; 
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
-    margin-top: 0.4em;
-    margin-bottom: 0.4em;
+	line-height: normal;
+	padding-left: 16px;
+	overflow: hidden; 
+	border-top: 1px solid white;
+	border-bottom: 1px solid white;
+	margin-top: 0.4em;
+	margin-bottom: 0.4em;
+        font-size: 1em;
 }
 
 #content pre:hover {
-    width: 200%;
-    position: relative;
-    z-index: 1; 
-    background-color: lightyellow;
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
+	width: 200%;
+	position: relative;
+	z-index: 1; 
+	background-color: lightyellow;
+	border-top: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
 }
 #content pre code {
-    font-family: Courier, Verdana, Monaco;
+    font-size: 1.1em;
     margin: 0;
     padding: 0;
-    color: black;
-    background-color: white;
-    font-size: 0.8em;
+    color: black; 
 }
 
 #content a { 
-    color: blue;
-    text-decoration: underline; 
+	color: blue;
+  text-decoration: none; 
 }
 #content a:visited { 
-    color: blue; 
+	color: blue; 
 }
 #content a:hover {
     color: lightskyblue;
@@ -115,12 +111,22 @@
 	color: blue; 
 }
 
+#content a code {
+	text-decoration: underline;
+}
+
 #content #title h1 {
 	font-size: 2.5em;
 	text-align: center;
 	line-height: 1em;
 }
 
+#content strong {
+	font-style: normal;
+	font-weight: normal;
+	background: yellow;
+	padding: 0.2em;
+}
 
 #content blockquote {
 	padding-left: 1em;
