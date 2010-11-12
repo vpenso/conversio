@@ -86,6 +86,8 @@ Options
   Print more verbose output.
 EOF
 
+# absolute minimalist HTML template used as default if the user
+# doesn't specify its own by command-line argument
 default_template = <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html 
@@ -94,17 +96,9 @@ default_template = <<EOF
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <link href="./style/reset.css" rel="stylesheet" type="text/css"> 
-  <link href="./style/content.css" rel="stylesheet" type="text/css"> 
-  <link href="./style/pygments.css" rel="stylesheet" type="text/css"> 
-  <link href="./style/default.css" rel="stylesheet" type="text/css"> 
 </head>
 <body>
-<div id="display">
-  <div id="content">
     <%= @content %>
-  </div>
-</div>
 </body>
 </html>
 EOF
@@ -213,21 +207,28 @@ begin
   if not options.ignore_config and  File.exists? user_config then
     STDERR.puts "Reading configuration file: #{user_config}" if options.verbose
     defaults = YAML.load_file user_config
-    # command-line arguments have precedents
+    # command-line arguments have precedents before the suer configuration
     options.colorize = defaults['colorize']
     options.engine = defaults['engine'] if options.engine.nil?
     options.table_of_content = defaults['table_of_content']
     options.template = defaults['template'] if options.template.nil?
   end
+
+  STDERR.puts 'Configuration:', options.inspect if options.verbose 
   
-  if options.verbose 
-    STDERR.puts 'Configuration:', options.inspect 
+  
+  template = String.new
+  # user the default XHTML template if the user hasn't defined its own
+  if options.template.nil? then
+    STDERR.puts 'Using default ERB template' if options.verbose
+    template = default_template 
+  else
+    STDERR.print 'Using ERB template: ', options.template, "\n" if options.verbose
+    options.template = File.expand_path(options.template)
+    template = File.read options.template  if File.exists? options.template
+    puts template
   end
 
-  # user the default XHTML template if the user hasn't defined its own
-  
-  template = default_template if template.nil? 
- 
   converter = Converter.new(template)
   converter.load_parser(options.engine) unless options.engine.nil?
   converter.color = true if options.colorize 
