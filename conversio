@@ -116,15 +116,20 @@ template:
 engine: 
 EOF
 
+# -------------------------------------------------------------
+# helper functions
+# -------------------------------------------------------------
 
-def load_lib(name)
-  begin 
-      require name
-  rescue LoadError
-    $stderr.puts "Loading library #{name} failed!"
-    exit 1
-  end
+def ask?(*question)
+  print question.join(' '), '? (y/n) > '
+  return true if STDIN.gets.chomp.downcase.eql?('y')
+  return false
 end
+
+def overwrite?(*str)
+  return ask?('Overwrite',str)
+end
+
 
 # -------------------------------------------------------------
 # class extensions
@@ -174,7 +179,7 @@ begin
     when '--colorize'
       options.colorize = true
     when '--config'
-      open("#{ENV['HOME']}/.conversiorc",'w') { |f| f.write config }
+      open(user_config,'w') { |f| f.write config } if overwrite? user_config 
       exit 0
     when '--engine'
       options.engine = arg
