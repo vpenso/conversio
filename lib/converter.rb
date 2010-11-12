@@ -62,7 +62,6 @@ class Converter
     # write the HTML file
     File.makedirs(File.dirname(dst)) unless File.exists?(File.dirname(dst))
     open(dst,'w') { |f| f.write @result }
-    STDOUT.puts "md #{dst}" 
   end
 
   def load_parser(parser)

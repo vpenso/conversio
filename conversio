@@ -214,7 +214,7 @@ begin
     options.template = defaults['template'] if options.template.nil?
   end
 
-  STDERR.puts 'Configuration:', options.inspect if options.verbose 
+  STDERR.print 'Configuration: ', options, "\n" if options.verbose 
   
   template = String.new
   # user the default ERB template if the user hasn't defined its own
@@ -254,7 +254,11 @@ begin
     end
   end
   # render the XHTML docs
-  src_dst_pairs.each_pair { |s,d| converter.markdown_to_xhtml(s,d) }
+  STDERR.puts 'Created files:' if options.verbose
+  src_dst_pairs.each_pair do |s,d| 
+    converter.markdown_to_xhtml(s,d)
+    STDERR.print '  ', d, "\n" if options.verbose
+  end
 
   exit 0
 
