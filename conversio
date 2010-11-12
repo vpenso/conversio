@@ -216,23 +216,27 @@ begin
 
   STDERR.puts 'Configuration:', options.inspect if options.verbose 
   
-  
   template = String.new
-  # user the default XHTML template if the user hasn't defined its own
+  # user the default ERB template if the user hasn't defined its own
   if options.template.nil? then
     STDERR.puts 'Using default ERB template' if options.verbose
     template = default_template 
   else
     STDERR.print 'Using ERB template: ', options.template, "\n" if options.verbose
     options.template = File.expand_path(options.template)
-    template = File.read options.template  if File.exists? options.template
-    puts template
+    if File.exists? options.template
+      template = File.read options.template
+    else
+      raise("The specified ERB templates is not existing!")
+    end
   end
 
+  # setup the converter object
   converter = Converter.new(template)
   converter.load_parser(options.engine) unless options.engine.nil?
   converter.color = true if options.colorize 
   converter.table_of_content = true if options.table_of_content
+  
   # get all the input files
   input_files = Array.new
   if File.directory?(src) then
