@@ -39,7 +39,7 @@ Options
 
 --config:
 
-  Creates a personal configuration file in ~/.conversiorci
+  Creates a personal configuration file in ~/.conversiorc
 
 -c, --colorize:
 
@@ -50,6 +50,10 @@ Options
   Select the Markdown parser to be used:
   * 'bluecloth' (default)
   * 'kramdown'
+
+-i, --ignore-config:
+
+  Don't read the configuration from ~/.conversiorc
 
 -h, --help:
 
@@ -105,9 +109,9 @@ default_template = <<EOF
 EOF
 
 config = <<EOF
-conf:
-  colorize: true
-  table_of_content: true
+color = true
+toc = true
+# template = 'path/to/file'
 EOF
 
 
@@ -135,6 +139,8 @@ end
 # -------------------------------------------------------------
 begin
 
+  user_config = "#{ENV['HOME']}/.conversiorc"
+
   # default values
   style = nil
   template = nil
@@ -142,12 +148,14 @@ begin
   toc = false
   color = false
   verbose = false
+  ignore = false
 
   # list of user options
   opts = GetoptLong.new(
     [ '--colorize', '-c', GetoptLong::NO_ARGUMENT],
     [ '--config', GetoptLong::NO_ARGUMENT],
     [ '--engine', '-e', GetoptLong::OPTIONAL_ARGUMENT],
+    [ '--ignore-config', '-i', GetoptLong::NO_ARGUMENT],
     [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
     [ '--style', '-s', GetoptLong::OPTIONAL_ARGUMENT],
     [ '--toc', '-t', GetoptLong::NO_ARGUMENT],
@@ -166,6 +174,8 @@ begin
       exit 0
     when '--engine'
       engine = arg
+    when '--ignore-config'
+      ignore = true
     when '--help' 
       puts help
       exit 0
@@ -187,6 +197,13 @@ begin
   # get the input source
   src = ARGV[0] || raise("no input defined")
   dst = ARGV[1] # optional parameter!
+
+  # read the default configuration of the user  
+  if not ignore and  File.exists? user_config then
+    eval open(user_config).readlines.join
+  end
+    
+  
   # user the default XHTML template if the user hasn't defined its own
   template = default_template if template.nil? 
   converter = Converter.new(template)
