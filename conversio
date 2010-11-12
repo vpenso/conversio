@@ -9,6 +9,7 @@ require 'ftools'
 require 'fileutils'
 require 'pathname'
 require 'getoptlong'
+require 'ostruct'
 require 'lib/pygmentizer'
 require 'lib/converter'
 require 'lib/htmltoc'
@@ -109,9 +110,10 @@ default_template = <<EOF
 EOF
 
 config = <<EOF
-color = true
-toc = true
-# template = 'path/to/file'
+colorize: true
+table_of_content: true
+template:
+engine: 
 EOF
 
 
@@ -141,14 +143,16 @@ begin
 
   user_config = "#{ENV['HOME']}/.conversiorc"
 
-  # default values
-  style = nil
-  template = nil
-  engine = nil
-  toc = false
-  color = false
-  verbose = false
-  ignore = false
+
+  # defaults for program arguments
+  options = OpenStruct.new
+  options.ignore_config = false
+  options.colorize = false
+  options.engine = nil
+  options.template = nil
+  options.table_of_content = false
+  options.verbose = false
+
 
   # list of user options
   opts = GetoptLong.new(
@@ -168,14 +172,14 @@ begin
   opts.each do |opt, arg|
     case opt
     when '--colorize'
-      color = true
+      options.colorize = true
     when '--config'
       open("#{ENV['HOME']}/.conversiorc",'w') { |f| f.write config }
       exit 0
     when '--engine'
-      engine = arg
+      options.engine = arg
     when '--ignore-config'
-      ignore = true
+      options.ignore_config = true
     when '--help' 
       puts help
       exit 0
@@ -183,33 +187,46 @@ begin
       FileUtils::Verbose.cp_r('resources/css/.',"#{arg}/style/")
       exit 0
     when '--toc'
-      toc = true
-    when '--template' 
-      template = open( arg ){ |file| file.read } if File.exist?(arg)
+      options.table_of_content = true
+    when '--template'
+      options.template = arg
+      #template = open( arg ){ |file| file.read } if File.exist?(arg)
     when '--template-default' 
       puts default_template
       exit 0
     when '--verbose'
-      verbose = true
+      options.verbose = true
     end
   end
+
 
   # get the input source
   src = ARGV[0] || raise("no input defined")
   dst = ARGV[1] # optional parameter!
 
   # read the default configuration of the user  
-  if not ignore and  File.exists? user_config then
-    eval open(user_config).readlines.join
+  if not options.ignore_config and  File.exists? user_config then
+    STDERR.puts "Reading configuration file: #{user_config}" if options.verbose
+    defaults = YAML.load_file user_config
+    # command-line arguments have precedents
+    options.colorize = defaults['colorize']
+    options.engine = defaults['engine'] if options.engine.nil?
+    options.table_of_content = defaults['table_of_content']
+    options.template = defaults['template'] if options.template.nil?
   end
-    
   
+  if options.verbose 
+    STDERR.puts 'Configuration:', options.inspect 
+  end
+
   # user the default XHTML template if the user hasn't defined its own
+  
   template = default_template if template.nil? 
+ 
   converter = Converter.new(template)
-  converter.load_parser(engine) unless engine.nil?
-  converter.color = true if color
-  converter.table_of_content = true if toc
+  converter.load_parser(options.engine) unless options.engine.nil?
+  converter.color = true if options.colorize 
+  converter.table_of_content = true if options.table_of_content
   # get all the input files
   input_files = Array.new
   if File.directory?(src) then
