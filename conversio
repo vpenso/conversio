@@ -60,10 +60,6 @@ Options
 
   show help
 
--s --style DST:
-
-  Write a resonable default CSS configuration to DST.
-
 -t, --toc:
 
   Enables the creation of a table of content.
@@ -160,7 +156,6 @@ begin
     [ '--engine', '-e', GetoptLong::OPTIONAL_ARGUMENT],
     [ '--ignore-config', '-i', GetoptLong::NO_ARGUMENT],
     [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
-    [ '--style', '-s', GetoptLong::OPTIONAL_ARGUMENT],
     [ '--toc', '-t', GetoptLong::NO_ARGUMENT],
     [ '--template', GetoptLong::OPTIONAL_ARGUMENT ],
     [ '--template-default', GetoptLong::NO_ARGUMENT ],
@@ -181,9 +176,6 @@ begin
       options.ignore_config = true
     when '--help' 
       puts help
-      exit 0
-    when '--style'
-      FileUtils::Verbose.cp_r('resources/css/.',"#{arg}/style/")
       exit 0
     when '--toc'
       options.table_of_content = true
