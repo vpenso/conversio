@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = %q{v.penso@gsi.de}
   s.executables = ["conversio"]
   s.extra_rdoc_files = ["bin/conversio", "lib/conversio.rb", "lib/conversio/converter.rb", "lib/conversio/htmltoc.rb", "lib/conversio/pygmentizer.rb"]
-  s.files = ["bin/conversio", "conversio.gemspec", "lib/conversio.rb", "lib/conversio/converter.rb", "lib/conversio/htmltoc.rb", "lib/conversio/pygmentizer.rb"]
+  s.files = ["README.md", "HISTORY.md", "bin/conversio", "conversio.gemspec", "lib/conversio.rb", "lib/conversio/converter.rb", "lib/conversio/htmltoc.rb", "lib/conversio/pygmentizer.rb"]
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Conversio"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{conversio}
