@@ -10,7 +10,7 @@ require 'fileutils'
 require 'pathname'
 require 'getoptlong'
 require 'ostruct'
-require 'lib/conversio'
+require 'conversio'
 
 include Conversio
 
