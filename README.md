@@ -1,4 +1,6 @@
-# Conversio
+Conversio by Jörg Behrendt and Victor Penso
+
+# Description
 
 Renders plain text files with [Markdown][1] syntax to XHTML pages. 
 User can define their own Ruby ERB templates to customize the 
@@ -20,6 +22,9 @@ Syntax high-lighting is done with Pyhton [Pygments][2]:
 
     conversio -h
 
+## License
+
+GPLv3 - see the COPYING file.
 
 [1]: http://daringfireball.net/projects/markdown/
 [2]: http://pygments.org/
