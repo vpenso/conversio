@@ -7,11 +7,12 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Victor Penso"]
   s.date = %q{2010-11-18}
+  s.default_executable = %q{conversio}
   s.description = %q{Renders Markdown plain text files to HTML}
   s.email = %q{v.penso@gsi.de}
-  s.extra_rdoc_files = ["lib/conversio.rb", "lib/conversio/converter.rb", "lib/conversio/htmltoc.rb", "lib/conversio/pygmentizer.rb"]
-  s.files = ["Rakefile", "conversio", "lib/conversio.rb", "lib/conversio/converter.rb", "lib/conversio/htmltoc.rb", "lib/conversio/pygmentizer.rb", "Manifest", "conversio.gemspec"]
-  s.homepage = %q{notyet}
+  s.executables = ["conversio"]
+  s.extra_rdoc_files = ["bin/conversio", "lib/conversio.rb", "lib/conversio/converter.rb", "lib/conversio/htmltoc.rb", "lib/conversio/pygmentizer.rb"]
+  s.files = ["bin/conversio", "conversio.gemspec", "lib/conversio.rb", "lib/conversio/converter.rb", "lib/conversio/htmltoc.rb", "lib/conversio/pygmentizer.rb"]
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Conversio"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{conversio}

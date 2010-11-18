@@ -1,7 +1,0 @@
-Rakefile
-conversio
-lib/conversio.rb
-lib/conversio/converter.rb
-lib/conversio/htmltoc.rb
-lib/conversio/pygmentizer.rb
-Manifest
