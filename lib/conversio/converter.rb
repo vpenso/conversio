@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Conversio
 
 class Hash
@@ -61,7 +63,7 @@ class Converter
     generate_table_of_content() if @table_of_content
     render()
     # write the HTML file
-    File.makedirs(File.dirname(dst)) unless File.exists?(File.dirname(dst))
+    FileUtils::mkdir_p(File.dirname(dst)) unless File.exists?(File.dirname(dst))
     open(dst,'w') { |f| f.write @result }
   end
 
@@ -111,7 +113,8 @@ class Converter
   def parse
     raise "Define source before rendering!" if @source == nil
     case @parser
-    when 'bluecloth': @content = BlueCloth::new(@source).to_html
+    when 'bluecloth'
+      @content = BlueCloth::new(@source).to_html
     else 
       puts "Markdown parser #{@parser} not supported yet"
     end

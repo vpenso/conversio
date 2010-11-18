@@ -5,7 +5,6 @@ $DEBUG = false
 require 'rubygems'
 require 'erb'
 require 'yaml'
-require 'ftools'
 require 'fileutils'
 require 'pathname'
 require 'getoptlong'
