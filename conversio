@@ -10,10 +10,9 @@ require 'fileutils'
 require 'pathname'
 require 'getoptlong'
 require 'ostruct'
-require 'lib/pygmentizer'
-require 'lib/converter'
-require 'lib/htmltoc'
+require 'lib/conversio'
 
+include Conversio
 
 help = <<EOF
 Synopsis

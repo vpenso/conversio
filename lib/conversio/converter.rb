@@ -1,3 +1,4 @@
+module Conversio
 
 class Hash
 
@@ -132,3 +133,4 @@ class Converter
 
 end
 
+end

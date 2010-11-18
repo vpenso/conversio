@@ -1,3 +1,5 @@
+module Conversio
+
 class HTMLTableOfContent
   
   attr_accessor :numbering, :table_of_content_div_class
@@ -109,5 +111,5 @@ class HTMLTableOfContent
 
 end
 
-
+end
 

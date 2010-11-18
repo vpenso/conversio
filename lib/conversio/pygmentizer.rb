@@ -1,4 +1,4 @@
-
+module Conversio
 
 
 class Pygmentizer
@@ -77,4 +77,6 @@ class Pygmentizer
   def highlight(string, style)
     return Pygmentizer::run("pygmentize -f html -l #{style}", string) << "\n"
   end
+end
+
 end
