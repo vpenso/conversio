@@ -20,7 +20,18 @@ Syntax high-lighting is done with Pyhton [Pygments][2]:
 
 ## Usage
 
+Take a look to the help text:
+
     conversio -h
+
+Convert all files called `*.markdown` inside a defined directory 
+and all sub-directories into HTML and store the in the destination
+directory
+
+    conversio ~/docs/path/to/files ~/public/path
+
+
+
 
 ## License
 
