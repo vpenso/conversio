@@ -115,6 +115,8 @@ class Converter
     case @parser
     when 'bluecloth'
       @content = BlueCloth::new(@source).to_html
+    when 'kramdown'
+      @content = Kramdown::Document.new(@source).to_html
     else 
       puts "Markdown parser #{@parser} not supported yet"
     end
