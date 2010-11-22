@@ -37,7 +37,7 @@ s.files = [
   "lib/conversio/htmltoc.rb", 
   "lib/conversio/pygmentizer.rb",
   "templates/no_css.erb",
-  "templates/simple.erb",
+  "templates/dark.erb",
   "templates/light.erb"
 ]
 s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Conversio"]
