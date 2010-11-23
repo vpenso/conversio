@@ -130,7 +130,7 @@ begin
   options.template_file = nil
   options.table_of_content = false
   options.verbose = false
-  options.template = 'simple'
+  options.template = 'default'
 
   # list of user options
   opts = GetoptLong.new(

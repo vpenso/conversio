@@ -36,6 +36,7 @@ s.files = [
   "lib/conversio/converter.rb", 
   "lib/conversio/htmltoc.rb", 
   "lib/conversio/pygmentizer.rb",
+  "templates/default.erb",
   "templates/no_css.erb",
   "templates/dark.erb",
   "templates/light.erb"
