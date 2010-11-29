@@ -10,7 +10,7 @@ high-lighting of code snippets is supported.
 
 ## Installation 
 
-Conversio RubyGems: 
+Conversio RubyGem: 
 
     gem install conversio
 
@@ -18,7 +18,7 @@ Syntax high-lighting is done with Pyhton [Pygments][2]:
 
     easy_install pygments
 
-## Usage
+## Usage Examples
 
 Take a look to the help text:
 
@@ -26,12 +26,14 @@ Take a look to the help text:
 
 Convert all files called `*.markdown` inside a defined directory 
 and all sub-directories into HTML and store the in the destination
-directory
+directory.
 
     conversio ~/docs/path/to/files ~/public/path
 
+Create a single `readme.html` file including a table of content by 
+using the 'dark' template:
 
-
+    conversio -t -p dark readme.markdown
 
 ## License
 
