@@ -42,7 +42,10 @@ Options
 
 -c, --colorize:
 
-  Enable syntax high-lighting for marked code blocks.
+  Enable syntax high-lighting for taged code blocks. Tags need
+  to be in the first line of the code block and have the form
+  of two dashes followed by the language like '--ruby' or
+  '--c++'.
 
 -e, --engine:
 
