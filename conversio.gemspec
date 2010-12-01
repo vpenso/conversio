@@ -9,6 +9,7 @@ s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :r
 s.authors = ["Jörg Behrendt","Victor Penso"]
 s.date = %q{2010-11-19}
 s.default_executable = %q{conversio}
+s.homepage = 'https://github.com/vpenso/conversio'
 
 s.description = <<-EOF 
 Renders plain text files with Markdown syntax to XHTML pages. 
