@@ -24,9 +24,7 @@ Take a look to the help text:
 
     conversio -h
 
-Convert all files called `*.markdown` inside a defined directory 
-and all sub-directories into HTML and store them in the destination
-directory.
+Convert all files called `*.markdown` or `*.md` inside a defined directory and all sub-directories into HTML and store them in the destination directory.
 
     conversio ~/docs/path/to/files ~/public/path
 

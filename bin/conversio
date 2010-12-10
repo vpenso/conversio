@@ -170,9 +170,12 @@ begin
   end
 
 
-  # get the input source
+  # get the input source 
   src = ARGV[0] || raise("no input defined")
-  dst = ARGV[1] # optional parameter!
+  unless ARGV[1].nil? 
+    raise('destination not a directory') unless File.directory?(ARGV[1])
+  end
+  dst = ARGV[1] 
 
   # read the default configuration of the user  
   if not options.ignore_config and  File.exists? user_config then
