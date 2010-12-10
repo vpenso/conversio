@@ -2,11 +2,7 @@ Conversio by Jörg Behrendt and Victor Penso
 
 # Description
 
-Renders plain text files with [Markdown][1] syntax to XHTML pages. 
-User can define their own Ruby ERB templates to customize the 
-XHTML page generation. Also the creation of a table of content 
-using the HTML header elements (like `<h1>`) and the syntax
-high-lighting of code snippets is supported.
+Renders plain text files with [Markdown][1] syntax to XHTML pages.  User can define their own Ruby ERB templates to customize the XHTML page generation. Also the creation of a table of content using the HTML header elements (like `<h1>`) and the syntax high-lighting of code snippets is supported.
 
 ## Installation 
 
@@ -35,13 +31,7 @@ using the 'dark' template:
 
 ### Syntax High-Lighting
 
-Using the `-c` option syntax colorization can be enabled. Conversio
-will inspect all code blocks for a syntax tag in the first line. This
-tag needs to be part of the code block (indented with four spaces) and
-is prefixed with two dashes followed by the language definition. For 
-example to high-light a code block as Ruby write `--ruby` as first line
-or for C++ `--c++`. If this tag is not present Conversio will not apply
-any high-lighting. The tag itself is passes to Pygments, therefore any
+Using the `-c` option syntax colorization can be enabled. Conversio will inspect all code blocks for a syntax tag in the first line. This tag needs to be part of the code block (indented with four spaces) and is prefixed with two dashes followed by the language definition. For example to high-light a code block as Ruby write `--ruby` as first line or for C++ `--c++`. If this tag is not present Conversio will not apply any high-lighting. The tag itself is passes to Pygments, therefore any
 language supported by it can be high-lighted.
 
 For a list of supported languages type:
