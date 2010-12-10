@@ -107,15 +107,6 @@ def overwrite?(*str)
 end
 
 
-# -------------------------------------------------------------
-# class extensions
-# -------------------------------------------------------------
-
-class Array
-  def resolv_path
-    Hash[ *self.collect { |e| [e,e.gsub(/.markdown/,'.html') ] }.flatten ]
-  end
-end
 
 # -------------------------------------------------------------
 # main program
@@ -220,22 +211,32 @@ begin
   # get all the input files
   input_files = Array.new
   if File.directory?(src) then
-    input_files = Dir["#{src}/**/*.markdown"]
+    input_files = Dir["#{src}/**/*.markdown"] + Dir["#{src}/**/*.md"]
   else
     file = File.expand_path(src)
     input_files << file
     src = File.dirname(file) 
   end
-  src_dst_pairs = input_files.resolv_path
-  # fix the destination path if needed
+  sdp = Hash.new # source destination pairs
+  input_files.each do |s|
+    case s
+    when /.markdown/
+      sdp[s] = s.gsub(/.markdown/,'.html')
+    when /.md/
+      sdp[s] = s.gsub(/.md/,'.html')
+    else
+      # make sure we have the always the right suffix
+      sdp[s] = s << '.html'
+    end
+  end
   unless dst.nil? then
-    src_dst_pairs.each_pair do |src_path,dst_path|
-      src_dst_pairs[src_path] = dst_path.gsub(/#{src}/,dst)      
+    sdp.each_pair do |s,d|
+      sdp[s] = d.gsub(/#{src}/,dst)      
     end
   end
   # render the XHTML docs
   STDERR.puts 'Created files:' if options.verbose
-  src_dst_pairs.each_pair do |s,d| 
+  sdp.each_pair do |s,d|
     converter.markdown_to_xhtml(s,d)
     STDERR.print '  ', d, "\n" if options.verbose
   end

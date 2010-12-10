@@ -1,3 +1,8 @@
+## 0.1.2
+
+* supporting files with suffix `.md`
+* fixing bug with input files without suffix
+
 ## 0.1.1
 
 * finishing Kramdown support

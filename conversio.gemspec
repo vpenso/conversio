@@ -29,6 +29,7 @@ s.extra_rdoc_files = [
   "lib/conversio/pygmentizer.rb"
 ]
 s.files = [
+  'CONTRIBUTORS', 
   "README.md", 
   "HISTORY.md", 
   "bin/conversio", 
