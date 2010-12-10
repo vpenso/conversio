@@ -2,36 +2,6 @@ require 'fileutils'
 
 module Conversio
 
-class Hash
-
- def deep_merge(hash)
-    target = dup
-    
-    hash.keys.each do |key|
-      if hash[key].is_a? Hash and self[key].is_a? Hash
-        target[key] = target[key].deep_merge(hash[key])
-        next
-      end
-      
-      target[key] = hash[key]
-    end
-    
-    target
-  end
-
-
-  def deep_merge!(second)
-    second.each_pair do |k,v|
-      if self[k].is_a?(Hash) and second[k].is_a?(Hash)
-        self[k].deep_merge!(second[k])
-      else
-        self[k] = second[k]
-      end
-    end
-  end
-end
-
-
 class Converter
 
   attr_accessor :table_of_content, :color
@@ -40,11 +10,6 @@ class Converter
     @template = template
     @table_of_content = false
     @color = false
-    #user_config = "#{ENV['HOME']}/.conversiorc"
-    #if File.exists?(user_config)
-      # overwrite defaults
-      #@meta_data = @meta_data.deep_merge(YAML.load_file(user_config))
-    #end
     # Holds the input Markdown plain text
     @source = nil
     # Hold Markdown rendered to HTML
@@ -84,25 +49,6 @@ class Converter
   end
 
   private
-
-  def configure()
-    config = nil
-    # read the header of the source file
-    start = @source.index("|--")
-    ende = @source.index("--|")
-    #if start != nil and ende != nil then
-    if false
-      STDERR.puts 'Meta data found in file!' if $DEBUG
-      yamlheader = @source[start+3,ende-start-3]
-      # overwrite defaults
-      config = @meta_data.deep_merge(YAML.load(yamlheader))
-      splitted =  @source.split('--|',2)
-      @source = splitted[1]
-    else
-      config = @meta_data
-    end
-    return config
-  end
 
   def load_template(tpl)
     puts "Loading template : "+tpl.to_s
