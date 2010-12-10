@@ -49,7 +49,7 @@ s.rubygems_version = %q{1.3.6}
 s.summary = %q{Renders Markdown plain text files to HTML}
 
 s.add_dependency('bluecloth', '>= 2.0.9')
-s.add_dependency('kramdown')
+s.add_dependency('kramdown', '>= 0.6.0')
 s.requirements << 'Pygments  (http://pygments.org/)'
 s.licenses = 'GPLv3'
 
